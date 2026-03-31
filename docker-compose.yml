@@ -17,3 +17,11 @@ services:
       - mock-api
     environment:
       - BASE_URL=http://mock-api:3000
+
+  jmeter:
+    image: justb4/jmeter
+    depends_on:
+      - mock-api
+    volumes:
+      - ./performance/jmeter:/tests
+    command: -n -t /tests/test-plan.jmx
