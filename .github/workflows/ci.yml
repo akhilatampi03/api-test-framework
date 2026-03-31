@@ -1,0 +1,28 @@
+name: API Test Framework CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Compose
+        run: |
+          docker --version
+          docker compose version
+
+      - name: Run Tests using Docker Compose
+        run: |
+          docker compose down || true
+          docker compose up --build --abort-on-container-exit
+
+      - name: Cleanup
+        if: always()
+        run: docker compose down
